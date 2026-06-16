@@ -63,6 +63,22 @@ if pasted_text.strip():
         elif n >= WARN_EVENTS:
             est_secs = n * 3
             st.info(f"⏱️ {n} events — estimated wait: ~{est_secs // 60}m{est_secs % 60:02d}s")
+        
+    # Check for space-separated events (suggest using commas)
+    lines = pasted_text.strip().split('\n')
+    for line in lines:
+        line = line.strip()
+        if not line:
+            continue
+        # Skip lines with date prefixes or commas
+        if re.match(r'^([A-Za-z]+\s+\d+(?:-\d+)?\s*(?:\([^)]*\))?)\s*[–—-]\s*(.*)', line):
+            continue
+        if ',' in line:
+            continue
+        # If the line has multiple words but no commas, suggest using commas
+        if len(line.split()) > 1:
+            st.warning("💡 Tip: Use commas to separate multiple events on the same line (e.g., `New Year's Day, Valentine's Day`).")
+            break
 
 # ── Step 3: Fetch ──
 col1, col2 = st.columns([1, 3])

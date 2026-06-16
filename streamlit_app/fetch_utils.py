@@ -62,29 +62,32 @@ def fetch_count(search_term: str, api_key: str, delay: float = 2.5) -> str | Non
 
 
 def parse_events(text: str) -> list[dict]:
-    """
-    Parse pasted text into structured events.
+    """Parse pasted text into structured events.
     
-    Each line is an event. Lines may optionally start with a date prefix:
-        "January 1 - New Year's Day"
-        "February 14 - Valentine's Day"
+    Handles:
+    - One event per line (newline‑separated)
+    - Multiple events on the same line separated by commas
+    - Optional date prefix (e.g., "January 1 - New Year's Day")
     
-    Returns list of {"date": str, "name": str}
+    Returns a list of dictionaries with keys "date" and "name".
     """
     events = []
     date_pattern = re.compile(r'^([A-Za-z]+\s+\d+(?:-\d+)?\s*(?:\([^)]*\))?)\s*[–—-]\s*(.*)')
     
-    for line in text.strip().split('\n'):
-        line = line.strip()
+    for raw_line in text.strip().split('\n'):
+        line = raw_line.strip()
         if not line:
             continue
-
+        # If the line matches a date prefix, treat the whole line as a single event
         m = date_pattern.match(line)
         if m:
             events.append({"date": m.group(1).strip(), "name": m.group(2).strip()})
-        else:
-            events.append({"date": "", "name": line})
-
+            continue
+        # Split on commas
+        parts = [p.strip() for p in line.split(',')]
+        for part in parts:
+            if part:
+                events.append({"date": "", "name": part})
     return events
 
 
