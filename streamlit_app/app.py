@@ -3,6 +3,7 @@
 import streamlit as st
 import pandas as pd
 import time
+import re
 
 from fetch_utils import fetch_count, parse_events, build_xlsx
 
