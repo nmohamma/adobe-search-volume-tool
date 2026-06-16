@@ -71,7 +71,8 @@ if pasted_text.strip():
         if not line:
             continue
         # Skip lines with date prefixes or commas
-        if re.match(r'^([A-Za-z]+\s+\d+(?:-\d+)?\s*(?:\([^)]*\))?)\s*[–—-]\s*(.*)', line):
+        date_pattern = re.compile(r'^([A-Za-z]+\s+\d+(?:-\d+)?\s*(?:\([^)]*\))?)\s*[-\–—]\s*(.*)')
+        if date_pattern.match(line):
             continue
         if ',' in line:
             continue

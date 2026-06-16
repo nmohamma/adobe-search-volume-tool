@@ -72,7 +72,7 @@ def parse_events(text: str) -> list[dict]:
     Returns a list of dictionaries with keys "date" and "name".
     """
     events = []
-    date_pattern = re.compile(r'^([A-Za-z]+\s+\d+(?:-\d+)?\s*(?:\([^)]*\))?)\s*[–—-]\s*(.*)')
+    date_pattern = re.compile(r'^([A-Za-z]+\s+\d+(?:-\d+)?\s*(?:\([^)]*\))?)\s*[-\–—]\s*(.*)')
     
     for raw_line in text.strip().split('\n'):
         line = raw_line.strip()
