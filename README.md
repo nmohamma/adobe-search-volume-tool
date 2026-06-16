@@ -19,7 +19,7 @@ Built with [Streamlit](https://streamlit.io).
 
 ## 🚀 Live Demo (Streamlit Cloud)
 
-https://adobe-search-volume-tool.streamlit.app
+[https://adobe-search-volume-tool.streamlit.app](https://adobe-search-volume-tool-lnydhewv22yvkgzwegk9xz.streamlit.app/)
 
 > *Deploy your own copy by forking this repo and following the steps below.*
 
