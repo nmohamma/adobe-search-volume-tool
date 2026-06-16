@@ -43,11 +43,26 @@ st.markdown(
     "March 17 - St. Patrick's Day\n```"
 )
 
+MAX_EVENTS = 30
+WARN_EVENTS = 15
+
 pasted_text = st.text_area(
     "Events (one per line)",
     height=200,
     placeholder="New Year's Day\nValentine's Day\nSt. Patrick's Day\nDiwali\nChristmas Day",
 )
+
+# Show event count and warnings
+if pasted_text.strip():
+    preview_events = parse_events(pasted_text)
+    n = len(preview_events)
+    if n > 0:
+        st.caption(f"📋 **{n}** event(s) detected")
+        if n > MAX_EVENTS:
+            st.error(f"⚠️ Too many events! Maximum is **{MAX_EVENTS}**. You have **{n}**. Please remove {n - MAX_EVENTS}.")
+        elif n >= WARN_EVENTS:
+            est_secs = n * 3
+            st.info(f"⏱️ {n} events — estimated wait: ~{est_secs // 60}m{est_secs % 60:02d}s")
 
 # ── Step 3: Fetch ──
 col1, col2 = st.columns([1, 3])
@@ -67,6 +82,10 @@ if fetch_clicked:
         st.stop()
 
     events = parse_events(pasted_text)
+    if len(events) > MAX_EVENTS:
+        st.error(f"Too many events! Maximum is **{MAX_EVENTS}**. You have **{len(events)}**.")
+        st.stop()
+
     terms = [ev["name"] for ev in events]
 
     status_placeholder.info(f"Fetching counts for {len(terms)} events... (may take a moment)")
